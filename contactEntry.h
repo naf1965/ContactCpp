@@ -7,20 +7,19 @@ using namespace std;
 
 class contactEntry {
 public:
-     contactEntry();
-     contactEntry(sql::SQLString f, sql::SQLString l, sql::SQLString p, sql::SQLString t,sql::SQLString I);
-     string text();
-     string json();
+    contactEntry();
+    contactEntry(sql::SQLString f, sql::SQLString l, sql::SQLString p, sql::SQLString t, sql::SQLString I);
+    string text();
+    string json();
      
-     string first;
-     string last;
-     string phone;
-     string type;
-     string ID;
+    string first;
+    string last;
+    string phone;
+    string type;
+    string ID;
 
 private:
 
 };
 
 #endif /* CONTACTENTRY_H */
-
