@@ -8,25 +8,23 @@ contactEntry::contactEntry(sql::SQLString f, sql::SQLString l, sql::SQLString p,
     last = l;
     phone = p;
     type = t;
-    ID=I;
+    ID = I;
 }
 
 string contactEntry::text() {
-	string result = ID + ". ";
-	result += first + " ";
-	result += last + " ";
-	result += phone + " ";
-	result += type;
-	return result;
-
+    string result = ID + ". ";
+    result += first + " ";
+    result += last + " ";
+    result += phone + " ";
+    result += type;
+    return result;
 }
 
 string contactEntry::json() {
-	string result = "{\"ID\":\"" + ID + "\",";
-	result += "\"first\":\"" + first + "\",";
-	result += "\"last\":\"" + last + "\",";
-	result += "\"phone\":\"" + phone + "\",";
-	result += "\"type\":\"" + type + "\"}";
-	return result;
-
+    string result = "{\"ID\":\"" + ID + "\",";
+    result += "\"first\":\"" + first + "\",";
+    result += "\"last\":\"" + last + "\",";
+    result += "\"phone\":\"" + phone + "\",";
+    result += "\"type\":\"" + type + "\"}";
+    return result;
 }
