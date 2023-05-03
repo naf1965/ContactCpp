@@ -5,6 +5,14 @@
 #include "contactEntry.h"
 
 
+bool validEmail(const string& email)
+{
+	const regex combination(
+		"(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
+	return regex_match(email, combination);
+}
+
+
 
 contactDB::contactDB() {
   	// Instantiate Driver
@@ -47,16 +55,17 @@ vector<contactEntry> contactDB::find(string search) {
 	std::unique_ptr<sql::Statement> stmnt(conn->createStatement());
     
     // Execute query
-    sql::ResultSet *res = stmnt->executeQuery(
+sql::ResultSet *res = stmnt->executeQuery(
 			"SELECT * FROM contacts WHERE Last like '%"+search+"%' OR "+
     		 + "First like '%"+search+"%' OR " +
-    		 + "Type like '%"+search+"%'");
+    		 + "Type like '%"+search+"%' OR " +
+	    	 + "Email like '%"+search+"%'");
     
     // Loop through and print results
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"));
+	    	res->getString("ID"), res->getString("Email"), res->getString("Nickname"));
 	    	
 	    list.push_back(entry);
 
@@ -84,7 +93,7 @@ vector<contactEntry> contactDB::findByLast(string last) {
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"));
+	    	res->getString("ID"), res->getString("Email"), res->getString("Nickname"));
 	    	
 	    list.push_back(entry);
 
@@ -112,7 +121,7 @@ vector<contactEntry> contactDB::findByFirst(string first) {
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"));
+	    	res->getString("ID"), res->getString("Email"), res->getString("Nickname"));
 	    	
 	    list.push_back(entry);
 
@@ -138,7 +147,7 @@ vector<contactEntry> contactDB::findByType(string type) {
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"));
+	    	res->getString("ID"),  res->getString("Email"), res->getString("Nickname"));
 	    	
 	    list.push_back(entry);
 
@@ -147,7 +156,61 @@ vector<contactEntry> contactDB::findByType(string type) {
 
 }
 
-void contactDB::addEntry(string first,string last,string phone, string type){
+vector<contactEntry> contactDB::findByEmail(string email) {
+	vector<contactEntry> list;
+	
+    // Make sure the connection is still valid
+    if (!conn) {
+   		cerr << "Invalid database connection" << endl;
+   		exit (EXIT_FAILURE);
+   	}	
+    // Create a new Statement
+	std::unique_ptr<sql::Statement> stmnt(conn->createStatement());
+    
+    // Execute query
+    sql::ResultSet *res = stmnt->executeQuery("SELECT * FROM contacts WHERE Email like '%"+email+"%'");
+    
+    // Loop through and print results
+    while (res->next()) {
+    	contactEntry entry(res->getString("First"),res->getString("Last"),
+			res->getString("Phone"),res->getString("Type"),
+	    	res->getString("ID"),  res->getString("Email"), res->getString("Nickname"));
+	    	
+	    list.push_back(entry);
+
+    }
+    return list;
+
+}
+
+vector<contactEntry> contactDB::findByNickname(string nickname) {
+	vector<contactEntry> list;
+	
+    // Make sure the connection is still valid
+    if (!conn) {
+   		cerr << "Invalid database connection" << endl;
+   		exit (EXIT_FAILURE);
+   	}	
+    // Create a new Statement
+	std::unique_ptr<sql::Statement> stmnt(conn->createStatement());
+    
+    // Execute query
+    sql::ResultSet *res = stmnt->executeQuery("SELECT * FROM contacts WHERE Nickname like '%"+nickname+"%'");
+    
+    // Loop through and print results
+    while (res->next()) {
+    	contactEntry entry(res->getString("First"),res->getString("Last"),
+			res->getString("Phone"),res->getString("Type"),
+	    	res->getString("ID"),  res->getString("Email"), res->getString("Nickname"));
+	    	
+	    list.push_back(entry);
+
+    }
+    return list;
+
+}
+
+void contactDB::addEntry(string first,string last,string phone, string type, string email, string nickname){
 
 	if (!conn) {
    		cerr << "Invalid database connection" << endl;
@@ -159,10 +222,15 @@ void contactDB::addEntry(string first,string last,string phone, string type){
   	if (type != "Friend" && type != "Family" && type!="Business"){
      	 type="Other";
   	}
-  	
-  	stmnt->executeQuery("INSERT INTO contacts(First,Last,Phone,Type) VALUES ('"+first+"','"+last+"','"+phone+"','"+type+"')");
+	if (!validEmail(email))
+	{
+		email = " ";
+	}
+  	stmnt->executeQuery("INSERT INTO contacts(First,Last,Phone,Type, Email, Nickname) VALUES ('"+first+"','"+last+"','"+phone+"','"+type+"','"+email+"','"+nickname+"')");
 }
 
+
+-----------------------------------------
 contactEntry contactDB::fetchEntry(string id){
 
 	contactEntry entry;	
