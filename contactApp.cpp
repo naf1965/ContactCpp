@@ -101,8 +101,8 @@ int main() {
     	string phone = req.matches[3];
     	string type = req.matches[4];
 	string email = req.matches[5];
-        string nickname = req.matches[6];
-    	ctdb.addEntry(first,last,phone,type,email,nickname);
+        string age = req.matches[6];
+    	ctdb.addEntry(first,last,phone,type,email,age);
 
     	res.set_content("{\"status\":\"success\"}", "text/json");
     	res.status = 200;
@@ -117,8 +117,8 @@ int main() {
     	string phone = req.matches[4];
     	string type = req.matches[5];
 	string email = req.matches[6];
-        string nickname = req.matches[7];
-    	ctdb.editEntry(ID,first,last,phone,type,email,nickname);
+        string age = req.matches[7];
+    	ctdb.editEntry(ID,first,last,phone,type,email,age);
 
     	res.set_content("{\"status\":\"success\"}", "text/json");
     	res.status = 200;
