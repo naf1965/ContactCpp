@@ -11,7 +11,7 @@
 #include "httplib.h"
 #include "contactDB.h"
 #include "contactEntry.h"
-const int port = 5005;
+const int port = 5004;
 
 using namespace std;
 
