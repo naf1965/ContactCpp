@@ -169,7 +169,7 @@ vector<contactEntry> contactDB::findByEmail(string email) {
 	std::unique_ptr<sql::Statement> stmnt(conn->createStatement());
     
     // Execute query
-    sql::ResultSet *res = stmnt->executeQuery("SELECT * FROM contacts WHERE Email like '%"+email+"%'");
+    sql::ResultSet *res = stmnt->executeQuery("SELECT * FROM contacts WHERE Type like '%"+email+"%'");
     
     // Loop through and print results
     while (res->next()) {
