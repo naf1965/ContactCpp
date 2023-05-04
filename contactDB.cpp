@@ -65,7 +65,7 @@ sql::ResultSet *res = stmnt->executeQuery(
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"), res->getString("Email"), res->getString("Nickname"));
+	    	res->getString("ID"), res->getString("Email"), res->getString("Age"));
 	    	
 	    list.push_back(entry);
 
@@ -93,7 +93,7 @@ vector<contactEntry> contactDB::findByLast(string last) {
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"), res->getString("Email"), res->getString("Nickname"));
+	    	res->getString("ID"), res->getString("Email"), res->getString("Age"));
 	    	
 	    list.push_back(entry);
 
@@ -121,7 +121,7 @@ vector<contactEntry> contactDB::findByFirst(string first) {
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"), res->getString("Email"), res->getString("Nickname"));
+	    	res->getString("ID"), res->getString("Email"), res->getString("Age"));
 	    	
 	    list.push_back(entry);
 
@@ -147,7 +147,7 @@ vector<contactEntry> contactDB::findByType(string type) {
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"),  res->getString("Email"), res->getString("Nickname"));
+	    	res->getString("ID"),  res->getString("Email"), res->getString("Age"));
 	    	
 	    list.push_back(entry);
 
@@ -174,7 +174,7 @@ vector<contactEntry> contactDB::findByEmail(string email) {
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"),  res->getString("Email"), res->getString("Nickname"));
+	    	res->getString("ID"),  res->getString("Email"), res->getString("Age"));
 	    	
 	    list.push_back(entry);
 
@@ -183,34 +183,8 @@ vector<contactEntry> contactDB::findByEmail(string email) {
 
 }
 
-vector<contactEntry> contactDB::findByNickname(string nickname) {
-	vector<contactEntry> list;
-	
-    // Make sure the connection is still valid
-    if (!conn) {
-   		cerr << "Invalid database connection" << endl;
-   		exit (EXIT_FAILURE);
-   	}	
-    // Create a new Statement
-	std::unique_ptr<sql::Statement> stmnt(conn->createStatement());
-    
-    // Execute query
-    sql::ResultSet *res = stmnt->executeQuery("SELECT * FROM contacts WHERE Nickname like '%"+nickname+"%'");
-    
-    // Loop through and print results
-    while (res->next()) {
-    	contactEntry entry(res->getString("First"),res->getString("Last"),
-			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"),  res->getString("Email"), res->getString("Nickname"));
-	    	
-	    list.push_back(entry);
 
-    }
-    return list;
-
-}
-
-void contactDB::addEntry(string first,string last,string phone, string type, string email, string nickname){
+void contactDB::addEntry(string first,string last,string phone, string type, string email, string age){
 
 	if (!conn) {
    		cerr << "Invalid database connection" << endl;
@@ -226,7 +200,7 @@ void contactDB::addEntry(string first,string last,string phone, string type, str
 	{
 		email = " ";
 	}
-  	stmnt->executeQuery("INSERT INTO contacts(First,Last,Phone,Type, Email, Nickname) VALUES ('"+first+"','"+last+"','"+phone+"','"+type+"','"+email+"','"+nickname+"')");
+  	stmnt->executeQuery("INSERT INTO contacts(First,Last,Phone,Type, Email, Age) VALUES ('"+first+"','"+last+"','"+phone+"','"+type+"','"+email+"','"+age+"')");
 }
 
 
@@ -249,12 +223,12 @@ contactEntry contactDB::fetchEntry(string id){
     if (res->next()) {
     	entry = contactEntry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"),res->getString("Email"),res->getString("Nickname"));
+	    	res->getString("ID"),res->getString("Email"),res->getString("Age"));
     }
     return entry;
 }
 
-void contactDB::editEntry(string idnum,string first,string last,string phone, string type, string email, string nickname){
+void contactDB::editEntry(string idnum,string first,string last,string phone, string type, string email, string age){
 	if (!conn) {
    		cerr << "Invalid database connection" << endl;
    		exit (EXIT_FAILURE);
@@ -271,7 +245,7 @@ void contactDB::editEntry(string idnum,string first,string last,string phone, st
              email=" ";
          }  
 	
-  	stmnt->executeQuery("UPDATE contacts SET First = '"+first+"', Last ='"+last+"', Phone ='"+phone+"', Type ='"+type+"', Email = '"+email+"', Nickname='"+nickname+"' WHERE ID='"+idnum+"'");
+  	stmnt->executeQuery("UPDATE contacts SET First = '"+first+"', Last ='"+last+"', Phone ='"+phone+"', Type ='"+type+"', Email = '"+email+"', Age='"+age+"' WHERE ID='"+idnum+"'");
   	
 }
 
