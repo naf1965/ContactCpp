@@ -1,18 +1,23 @@
 #include <vector>
 #include <iostream>
-#include <mariadb/conncpp.hpp>
 #include <regex>
+#include <mariadb/conncpp.hpp>
 #include "contactDB.h"
 #include "contactEntry.h"
 
 
-bool validEmail(const std::string& email)
-{
-    const std::regex combination(
-        "(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
-    return std::regex_match(email, combination);
-}
 
+bool isValid(const string& email)
+{
+  
+    // Regular expression definition
+    const regex pattern(
+        "(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
+  
+    // Match the string pattern
+    // with regular expression
+    return regex_match(email, pattern);
+}
 
 
 contactDB::contactDB() {
@@ -56,7 +61,7 @@ vector<contactEntry> contactDB::find(string search) {
 	std::unique_ptr<sql::Statement> stmnt(conn->createStatement());
     
     // Execute query
-sql::ResultSet *res = stmnt->executeQuery(
+    sql::ResultSet *res = stmnt->executeQuery(
 			"SELECT * FROM contacts WHERE Last like '%"+search+"%' OR "+
     		 + "First like '%"+search+"%' OR " +
     		 + "Type like '%"+search+"%' OR " +
@@ -66,7 +71,7 @@ sql::ResultSet *res = stmnt->executeQuery(
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"), res->getString("Email"), res->getString("Age"));
+	    	res->getString("ID"),res->getString("Email"), res->getString("Age"));
 	    	
 	    list.push_back(entry);
 
@@ -94,7 +99,7 @@ vector<contactEntry> contactDB::findByLast(string last) {
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"), res->getString("Email"), res->getString("Age"));
+	    	res->getString("ID"),res->getString("Email"),res->getString("Age"));
 	    	
 	    list.push_back(entry);
 
@@ -122,7 +127,7 @@ vector<contactEntry> contactDB::findByFirst(string first) {
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"), res->getString("Email"), res->getString("Age"));
+	    	res->getString("ID"),res->getString("Email"),res->getString("Age"));
 	    	
 	    list.push_back(entry);
 
@@ -148,7 +153,7 @@ vector<contactEntry> contactDB::findByType(string type) {
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"),  res->getString("Email"), res->getString("Age"));
+	    	res->getString("ID"),res->getString("Email"),res->getString("Age"));
 	    	
 	    list.push_back(entry);
 
@@ -157,6 +162,7 @@ vector<contactEntry> contactDB::findByType(string type) {
 
 }
 
+//HERE!
 vector<contactEntry> contactDB::findByEmail(string email) {
 	vector<contactEntry> list;
 	
@@ -175,7 +181,7 @@ vector<contactEntry> contactDB::findByEmail(string email) {
     while (res->next()) {
     	contactEntry entry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"),  res->getString("Email"), res->getString("Age"));
+	    	res->getString("ID"),res->getString("Email"),res->getString("Age"));
 	    	
 	    list.push_back(entry);
 
@@ -183,7 +189,6 @@ vector<contactEntry> contactDB::findByEmail(string email) {
     return list;
 
 }
-
 
 void contactDB::addEntry(string first,string last,string phone, string type, string email, string age){
 
@@ -197,14 +202,16 @@ void contactDB::addEntry(string first,string last,string phone, string type, str
   	if (type != "Friend" && type != "Family" && type!="Business"){
      	 type="Other";
   	}
-	if (!validEmail(email))
-	{
-		email = " ";
-	}
-  	stmnt->executeQuery("INSERT INTO contacts(First,Last,Phone,Type, Email, Age) VALUES ('"+first+"','"+last+"','"+phone+"','"+type+"','"+email+"','"+age+"')");
+  	
+	
+	  if (!isValid(email))
+          {
+              email=" ";
+          }   
+	
+	
+  	stmnt->executeQuery("INSERT INTO contacts(First,Last,Phone,Type,Email,Age) VALUES ('"+first+"','"+last+"','"+phone+"','"+type+"','"+email+"','"+age+"')");
 }
-
-
 
 contactEntry contactDB::fetchEntry(string id){
 
@@ -241,7 +248,7 @@ void contactDB::editEntry(string idnum,string first,string last,string phone, st
      	 type="Other";
   	}
   	
-	 if (!validEmail(email))
+	 if (!isValid(email))
          {
              email=" ";
          }  
