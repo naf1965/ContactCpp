@@ -28,7 +28,7 @@ function formatMatches(json) {
     var result = '<table class="table table-success table-striped""><tr><th>First</th><th>Last</th><th>Phone</th><th>Type</th><th>Email</th><th>Age</th><th>Action</th><tr>';
     json.forEach(function(entry, i) {
         result += "<tr><td class='first'>" + entry['first'] + "</td><td class='last'>" + entry['last'];
-        result += "</td><td class='phone'>" + entry['phone'] + "</td><td class='type'>" + entry['type'] +  "</td><td class='email'>" + entry['email'] + "</td><td class='age'>" + entry['age']+ "</td>";
+        result += "</td><td class='phone'>" + entry['phone'] + "</td><td class='type'>" + entry['type'] + "</td><td class='email'>" + entry['email'] + "</td><td class='age'>" + entry['age']+ "</td>";
         result += "<td><button type='button' class='btn btn-primary btn-sm edit' data-bs-toggle='modal' data-bs-target='#editContact' ";
         result += "onclick=\"editContact(" + i + ")\">Edit</button> ";
         result += "<button type='button' class='btn btn-primary btn-sm ' onclick=\"deleteContact("+ entry['ID'] +")\">Delete</button></td></tr>";
@@ -105,7 +105,7 @@ function editContact(row) {
 	document.getElementById("editphone").value = contactList[row]["phone"];
 	document.getElementById("edittype").innerText = contactList[row]["type"];
 	document.getElementById("editemail").value = contactList[row]["email"];
-        document.getElementById("editage").value = contactList[row]["age"];
+	document.getElementById("editage").value = contactList[row]["age"];
 	
 	//Save ID in modal
 	var modal = document.querySelector("#editContact");
@@ -153,5 +153,3 @@ function deleteContact(id) {
      findMatches(" ");
 
 }
-
-
