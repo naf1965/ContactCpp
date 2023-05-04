@@ -20,7 +20,7 @@ int main(){
 
     cout << "Contacts test program" << endl;
 
-    cout << "Select an option (1-search first, 2-search last, 3-search type, 4-add, 5-edit, 6-delete, 7-end): ";
+    cout << "Select an option (1-search first, 2-search last, 3-search type, 4-search email, 5-add, 6-edit, 7-delete, 8-end): ";
     cin >> o;
 
     while (o!="7") {
@@ -55,22 +55,36 @@ int main(){
 			cout << results[i].text() << endl;
         }
       } else if (o=="4") {
+	cout << "Enter email to find:";
+        string emailMatch;
+        getline(cin,emailMatch);
+        results = ctdb.findByEmail(emailMatch);
+        for (int i = 0; i<results.size(); i++) {
+                        cout << results[i].text() << endl;
+        }
+	      
+       } else if (o=="5") {
 
         cout <<"Enter a first name to add: ";
-        string first,last,phone,type;
+        string first,last,phone,type,email,age;
         getline(cin,first);
         cout << "Enter a last name to add: ";
         getline(cin,last);
         cout << "Enter a phone number: ";
         getline(cin,phone);
-        cout << "lastly, end a type: ";
-        getline(cin,type);;
+	cout << "Enter a type: ";
+        getline(cin,type);
+        cout << "Enter an email: ";
+        getline(cin,email);    
+        cout << "Enter an age: ";
+        getline(cin,age);;
+	      
 
-        ctdb.addEntry(first,last,phone,type);
+        ctdb.addEntry(first,last,phone,type,email,age);
         cout << "Entry added" << endl;
 
-      } else if (o=="5") {
-        string first,last,phone,type, IDnum;
+      } else if (o=="6") {
+        string first,last,phone,type,IDnum,email,age;
         cout << "Leave blank to keep same."  << endl;
         cout << "Enter an ID number to edit: ";
         getline(cin,IDnum);
@@ -96,11 +110,20 @@ int main(){
         	cout << "Enter a new type("+entry.type+"): ";
         	getline(cin,type);
         	if (type.size()>0) entry.type = type;
+		
+		cout << "Enter a new email("+entry.email+"): ";
+        	getline(cin,email);
+        	if (email.size()>0) entry.email = email;
         	
-        	ctdb.editEntry(entry.ID,entry.first,entry.last,entry.phone,entry.type);
+        	cout << "Enter a new age("+entry.age+"): ";
+        	getline(cin,age);
+        	if (age.size()>0) entry.age = age;
+        	
+		
+        	ctdb.editEntry(entry.ID,entry.first,entry.last,entry.phone,entry.type,entry.email,entry.age);
         	cout << "Done!" << endl;
         }
-      } else if (o=="6") {
+      } else if (o=="7") {
 
         string IDnum;
         cout << "Enter an ID number to delete: ";
@@ -108,7 +131,7 @@ int main(){
         ctdb.deleteEntry(IDnum);
         cout << "Deleted!" << endl;
       }
-      cout << "Select an option (1-search first, 2-search last, 3-search type, 4-add, 5-edit, 6-delete, 7-end): ";
+      cout << "Select an option (1-search first, 2-search last, 3-search type, 4-search email, 5-add, 6-edit, 7-delete, 8-end): ";
       getline(cin,o);
 
     }
