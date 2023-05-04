@@ -1,15 +1,16 @@
 #include <vector>
 #include <iostream>
 #include <mariadb/conncpp.hpp>
+#include <regex>
 #include "contactDB.h"
 #include "contactEntry.h"
 
 
-bool validEmail(const string& email)
+bool validEmail(const std::string& email)
 {
-	const regex combination(
-		"(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
-	return regex_match(email, combination);
+    const std::regex combination(
+        "(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
+    return std::regex_match(email, combination);
 }
 
 
