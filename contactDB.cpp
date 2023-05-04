@@ -266,7 +266,7 @@ void contactDB::editEntry(string idnum,string first,string last,string phone, st
      	 type="Other";
   	}
   	
-	 if (!isValid(email))
+	 if (!validEmail(email))
          {
              email=" ";
          }  
