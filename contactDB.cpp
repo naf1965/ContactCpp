@@ -230,7 +230,7 @@ void contactDB::addEntry(string first,string last,string phone, string type, str
 }
 
 
------------------------------------------
+
 contactEntry contactDB::fetchEntry(string id){
 
 	contactEntry entry;	
@@ -249,12 +249,12 @@ contactEntry contactDB::fetchEntry(string id){
     if (res->next()) {
     	entry = contactEntry(res->getString("First"),res->getString("Last"),
 			res->getString("Phone"),res->getString("Type"),
-	    	res->getString("ID"));
+	    	res->getString("ID"),res->getString("Email"),res->getString("Nickname"));
     }
     return entry;
 }
 
-void contactDB::editEntry(string idnum,string first,string last,string phone, string type){
+void contactDB::editEntry(string idnum,string first,string last,string phone, string type, string email, string nickname){
 	if (!conn) {
    		cerr << "Invalid database connection" << endl;
    		exit (EXIT_FAILURE);
@@ -266,7 +266,12 @@ void contactDB::editEntry(string idnum,string first,string last,string phone, st
      	 type="Other";
   	}
   	
-  	stmnt->executeQuery("UPDATE contacts SET First = '"+first+"', Last ='"+last+"', Phone ='"+phone+"', Type ='"+type+"' WHERE ID='"+idnum+"'");
+	 if (!isValid(email))
+         {
+             email=" ";
+         }  
+	
+  	stmnt->executeQuery("UPDATE contacts SET First = '"+first+"', Last ='"+last+"', Phone ='"+phone+"', Type ='"+type+"', Email = '"+email+"', Nickname='"+nickname+"' WHERE ID='"+idnum+"'");
   	
 }
 
