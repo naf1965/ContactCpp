@@ -3,14 +3,14 @@
 contactEntry::contactEntry() {
 }
 
-contactEntry::contactEntry(sql::SQLString f, sql::SQLString l, sql::SQLString p, sql::SQLString t, sql::SQLString I, sql::SQLString e, sql::SQLString n) {
+contactEntry::contactEntry(sql::SQLString f, sql::SQLString l, sql::SQLString p, sql::SQLString t, sql::SQLString I, sql::SQLString e, sql::SQLString a) {
     first = f;
     last = l;
     phone = p;
     type = t;
     ID = I;
     email = e;
-    nickname = n;
+    age = a;
 }
 
 string contactEntry::text() {
@@ -18,9 +18,9 @@ string contactEntry::text() {
     result += first + " ";
     result += last + " ";
     result += phone + " ";
-    result += type;
-    result+= email;
-    result += nickname;
+    result += type+ " ";
+    result+= email+ " ";
+    result += age;
     return result;
 }
 
@@ -31,6 +31,6 @@ string contactEntry::json() {
     result += "\"phone\":\"" + phone + "\",";
     result += "\"type\":\"" + type + "\"}";
     result += "\"email\":\"" + email + "\"}";
-    result += "\"nickname\":\"" + nickname + "\"}";
+    result += "\"age\":\"" + age + "\"}";
     return result;
 }
